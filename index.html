@@ -3,1464 +3,1010 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cut 2 Size - Premium Flat Pack Cabinetry with 3D Showcase</title>
-    <!-- THREE.JS LIBRARY - This must be included -->
+    <title>Cut 2 Size Flat Pack Cabinet Solutions</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link rel="stylesheet" href="styles/services-hover.css">
-    <style>
-        /* --- CORE STYLES FROM BUSINESS WEBSITE --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f1419 0%, #1a1a1a 50%, #0f1419 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* --- STYLES FROM ANIMATION CODE (FILE 1) --- */
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1; /* Place it in the background */
-        }
-
-        .scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 1.2rem;
-            z-index: 10;
-            animation: bounce 2s infinite;
-            transition: opacity 0.5s;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #1e40af, #3b82f6);
-            z-index: 1001; /* Above navbar */
-            transition: width 0.3s ease;
-        }
-
-        /* --- WRAPPER FOR ALL WEBSITE CONTENT --- */
-        .main-content {
-            position: relative;
-            z-index: 1; /* Ensure content is above the canvas */
-        }
-
-        /* --- NAVIGATION FROM BUSINESS WEBSITE --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            padding: 30px 0;
-            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(45deg, #3b82f6, #1e40af);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover { color: #3b82f6; }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 0; height: 2px; background: linear-gradient(45deg, #3b82f6, #1e40af);
-            transition: width 0.3s ease;
-        }
-        .nav-links a:hover::after { width: 100%; }
-
-        .cta-btn {
-            background: linear-gradient(45deg, #3b82f6, #1e40af);
-            color: white; padding: 12px 24px; border: none; border-radius: 25px;
-            font-weight: 600; cursor: pointer; transition: all 0.3s ease;
-            text-decoration: none; display: inline-block;
-        }
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-        }
-
-        /* --- NEW HERO SECTION TO REPLACE THE OLD ONE --- */
-        .hero-section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-        }
-        .hero-content h1 {
-            font-size: 6rem; /* Doubled from 3rem */
-            color: #1e40af; /* Dark blue */
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-            position: relative; /* Ensures text stays above animations */
-            z-index: 10;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-            position: relative; /* Ensures text stays above animations */
-            z-index: 10;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-            to { text-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 40px rgba(59, 130, 246, 0.6); }
-        }
-
-        /* --- STANDARD SECTION STYLING --- */
-        .content-section {
-            padding: 100px 0;
-            background: rgba(15, 20, 25, 0.5); /* Slightly transparent background to see canvas */
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 60px;
-            background: linear-gradient(45deg, #ffffff, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* --- ALL OTHER STYLES FROM BUSINESS WEBSITE --- */
-        /* (Services, Why Choose, Contact, Footer etc. are mostly unchanged) */
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        .service-card {
-            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px;
-            backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease; text-align: center;
-        }
-        .service-card:hover {
-            transform: translateY(-10px); background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4);
-        }
-        .service-icon {
-            width: 80px; height: 80px; margin: 0 auto 20px;
-            background: linear-gradient(45deg, #3b82f6, #1e40af);
-            border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem;
-        }
-        .service-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; color: #ffffff; }
-        .service-card p { color: #d1d5db; line-height: 1.6; }
-
-        .benefits-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
-        }
-        .benefit-item {
-            background: rgba(0, 0, 0, 0.4); padding: 30px; border-radius: 15px;
-            border-left: 4px solid #3b82f6; transition: all 0.3s ease;
-        }
-        .benefit-item:hover { transform: translateX(10px); background: rgba(0, 0, 0, 0.6); }
-        .benefit-item h4 { font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #3b82f6; }
-        .benefit-item p { color: #d1d5db; }
-
-        .contact-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        .contact-info h3 { font-size: 1.8rem; margin-bottom: 20px; color: #3b82f6; }
-        .contact-info p { font-size: 1.1rem; margin-bottom: 30px; color: #d1d5db; }
-        .contact-item {
-            display: flex; align-items: center; margin-bottom: 15px; padding: 15px;
-            background: rgba(255, 255, 255, 0.05); border-radius: 10px; transition: all 0.3s ease;
-        }
-        .contact-item:hover { background: rgba(59, 130, 246, 0.1); }
-        .contact-item strong { color: #3b82f6; margin-right: 10px; min-width: 80px; }
-
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 20px;
-            backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 5px; color: #3b82f6; font-weight: 600; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 12px; border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px; background: rgba(255, 255, 255, 0.1);
-            color: #ffffff; font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none; border-color: #3b82f6; background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- SPLIT LAYOUT FOR HERO AND CONTACT SECTION --- */
-        .split-layout {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px); /* Full height minus navbar */
-        }
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-        }
-        .contact-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background: rgba(15, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        .contact-content {
-            max-width: 800px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .contact-info {
-            text-align: center;
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .contact-info p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #d1d5db;
-        }
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-        .contact-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-        .contact-item strong {
-            color: #3b82f6;
-            margin-right: 10px;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- SPLIT LAYOUT FOR HERO AND CONTACT SECTION --- */
-        .split-layout {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px); /* Full height minus navbar */
-        }
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-        }
-        .contact-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background: rgba(15, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        .contact-content {
-            max-width: 800px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .contact-info {
-            text-align: center;
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .contact-info p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #d1d5db;
-        }
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-        .contact-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-        .contact-item strong {
-            color: #3b82f6;
-            margin-right: 10px;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- SPLIT LAYOUT FOR HERO AND CONTACT SECTION --- */
-        .split-layout {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px); /* Full height minus navbar */
-        }
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-        }
-        .contact-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background: rgba(15, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        .contact-content {
-            max-width: 800px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .contact-info {
-            text-align: center;
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .contact-info p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #d1d5db;
-        }
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-        .contact-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-        .contact-item strong {
-            color: #3b82f6;
-            margin-right: 10px;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- SPLIT LAYOUT FOR HERO AND CONTACT SECTION --- */
-        .split-layout {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px); /* Full height minus navbar */
-        }
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-        }
-        .contact-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background: rgba(15, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        .contact-content {
-            max-width: 800px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .contact-info {
-            text-align: center;
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .contact-info p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #d1d5db;
-        }
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-        .contact-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-        .contact-item strong {
-            color: #3b82f6;
-            margin-right: 10px;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- VERTICAL SPLIT LAYOUT FOR HERO AND CONTACT SECTION --- */
-        .vertical-split-layout {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 60px); /* Full height minus navbar */
-        }
-        .hero-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-content h1 {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 700px;
-            line-height: 1.6;
-            margin: 0 auto;
-        }
-        .contact-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background: rgba(15, 20, 25, 0.7);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(59, 130, 246, 0.1);
-        }
-        .contact-content {
-            max-width: 800px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-        .contact-info {
-            text-align: center;
-        }
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #3b82f6;
-        }
-        .contact-info p {
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            color: #d1d5db;
-        }
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s ease;
-            width: 100%;
-        }
-        .contact-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
-        .contact-item strong {
-            color: #3b82f6;
-            margin-right: 10px;
-        }
-        .contact-form {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .form-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            flex: 1;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #3b82f6;
-            font-weight: 600;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 1rem;
-        }
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(45deg, #3b82f6, #1e40af); color: white; padding: 15px 35px;
-            border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; display: inline-block;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
-        footer {
-            padding: 60px 0 30px; background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
-        }
-        .footer-content {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px; margin-bottom: 40px;
-        }
-        .footer-section h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: #3b82f6; }
-        .footer-section a, .footer-section p {
-            color: #d1d5db; text-decoration: none; display: block; margin-bottom: 10px; transition: color 0.3s ease;
-        }
-        .footer-section a:hover { color: #3b82f6; }
-        .footer-bottom {
-            text-align: center; padding-top: 30px; border-top: 1px solid rgba(59, 130, 246, 0.3); color: #9ca3af;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-content p { font-size: 1.2rem; }
-            .contact-content { grid-template-columns: 1fr; }
-            .services-grid, .benefits-grid, .stats-grid { grid-template-columns: 1fr; }
-        }
-
-        /* --- CONTACT CALLOUT SECTION --- */
-        .contact-callout {
-            background: rgba(15, 20, 25, 0.8);
-            padding: 60px 20px;
-            border-radius: 20px;
-            margin: 40px 0;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .contact-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .contact-header h3 {
-            font-size: 2rem;
-            color: #3b82f6;
-            margin-bottom: 10px;
-        }
-        .contact-header p {
-            color: #d1d5db;
-            font-size: 1.1rem;
-            margin-bottom: 0;
-        }
-    </style>
-    <!-- Add this after your existing scripts -->
+    <!-- Add EmailJS library -->
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         (function(){
             emailjs.init("D-OCbBMhcz6QW6uTc"); // Your Public Key
         })();
     </script>
+    <style>
+        /* --- Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right,
+                #1a237e 0%,
+                #283593 20%,
+                #3949ab 40%,
+                #5c6bc0 60%,
+                #9fa8da 80%,
+                #c5cae9 100%
+            );
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Header Styles --- */
+        header {
+            padding: 20px 0;
+            background-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 51, 102, 0.2);
+            z-index: 1;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('Cut2Size(1).png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 2;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo-container { 
+            /* Styles for logo container */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo { 
+            /* Styles for logo */
+            width: 250px; /* Adjusted width */
+            height: auto;
+            display: flex;
+            justify-content: center; /* Center the image */
+            align-items: center;
+            position: relative;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            margin: 0;
+        }
+        .logo img { 
+            width: 100%; 
+            height: auto; 
+            object-fit: contain;
+            display: block; /* Ensure proper image display */
+        }
+        .logo:hover { 
+            transform: rotate(15deg) scale(1.05); 
+            transition: all 0.5s ease; 
+        }
+
+
+        nav { margin-left: auto; }
+        nav ul { display: flex; list-style-type: none; flex-wrap: wrap; }
+        nav ul li { margin-left: 15px; margin-bottom: 5px; }
+        nav ul li a { text-decoration: none; color: white; font-weight: 500; padding: 5px 10px; border-radius: 5px; transition: all 0.3s ease; white-space: nowrap; }
+        nav ul li a:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+        /* --- Section Styles --- */
+        .hero, .features, .how-it-works, .contact {
+            padding: 60px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Hero Styles --- */
+        .hero { text-align: center; }
+        .hero h1 { font-size: 42px; margin-bottom: 20px; color: white; font-weight: 700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+        .hero p { font-size: 17px; margin-bottom: 30px; color: white; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); max-width: 800px; margin-left: auto; margin-right: auto; }
+        .cta-button { display: inline-block; padding: 14px 28px; background-color: #003366; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); border: none; cursor: pointer; }
+        .cta-button:hover { background-color: #001f3f; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); }
+
+        /* --- How It Works Styles --- */
+        .steps { display: flex; justify-content: space-between; margin-top: 40px; flex-wrap: wrap; gap: 20px; }
+        .step { flex: 1; min-width: 220px; text-align: center; padding: 15px; }
+        .step-number { width: 50px; height: 50px; background-color: #003366; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; color: white; font-weight: bold; font-size: 22px; }
+        .step-title { font-size: 18px; margin-bottom: 8px; color: white; font-weight: 700; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); }
+        .step-description { color: white; line-height: 1.5; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); font-size: 0.9em; }
+
+        /* --- Features Styles --- */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .feature-card { background-color: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); }
+        .feature-icon { width: 50px; height: 50px; background-color: #003366; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; color: white; font-size: 22px; }
+        .feature-title { font-size: 20px; margin-bottom: 12px; color: #1a237e; font-weight: 700; }
+        .feature-description { color: #777; line-height: 1.6; font-size: 0.95em; }
+
+        /* --- Contact Section Layout --- */
+        .contact-layout-wrapper {
+            display: flex;
+            gap: 25px; /* Space between columns */
+            align-items: flex-start; /* Align items to the top */
+        }
+
+        /* --- Condensed Product List Sidebar (NEW) --- */
+        #contact-product-list-sidebar {
+            flex: 0 0 280px; /* Fixed width for product list */
+            background-color: #f8f9fa; /* Light background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-height: 700px; /* Limit height and allow scroll */
+            overflow-y: auto;
+            order: 1; /* Position first */
+        }
+        #contact-product-list-sidebar h4 { /* Category headings */
+            color: #1a237e;
+            font-size: 1.1em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+         #contact-product-list-sidebar h4:first-of-type {
+             margin-top: 0; /* Remove top margin for the first heading */
+         }
+
+        /* --- Contact Form Area --- */
+        .contact-form-area {
+             flex: 1 1 500px; /* Allow form to grow, base width */
+             order: 2; /* Position second */
+             max-width: 700px; /* Limit max width */
+        }
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Drag Preview Sidebar (remains mostly the same) --- */
+        #drag-preview-sidebar {
+            flex: 0 0 250px;
+            background: #e0e4f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            transition: opacity 0.2s ease-in-out;
+            order: 3; /* Position third */
+            align-self: stretch;
+        }
+        #drag-preview-sidebar h4 { margin: 0 0 15px 0; color: #1a237e; font-size: 1.1em; border-bottom: 1px solid #c5cae9; padding-bottom: 8px; }
+        #drag-preview-sidebar p { margin: 8px 0; color: #334; font-size: 0.95em; }
+        #preview-name { font-weight: bold; }
+        #preview-code { font-style: italic; color: #556; }
+
+        /* --- Form Element Styles --- */
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; margin-bottom: 5px; color: #003366; font-weight: 500; }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 15px; }
+        .form-textarea { min-height: 100px; }
+        .form-button { display: inline-block; padding: 11px 28px; background-color: #003366; color: white; border: none; border-radius: 30px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .form-button:hover { background-color: #001f3f; }
+        #contactSuccessMessage { display: none; color: green; font-weight: bold; margin-top: 15px; text-align: center; }
+
+        /* --- Draggable Product Card Styles (within sidebar) --- */
+        .product-card-condensed { /* Renamed for clarity */
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: grab;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .product-card-condensed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        .product-card-condensed.dragging {
+            opacity: 0.5;
+            border-style: dashed;
+            border-color: #1a237e;
+        }
+        .product-code-condensed { /* Renamed */
+            color: #1a237e;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+        .product-name-condensed { /* Added for better display */
+             display: block;
+             color: #333;
+             font-size: 0.85em;
+             margin-bottom: 6px;
+        }
+        .product-sizes-condensed { /* Renamed */
+            color: #666;
+            font-size: 0.75em;
+        }
+
+        /* --- Drop Zone Styles --- */
+        #selected-products-dropzone { margin-top: 10px; margin-bottom: 18px; padding: 15px; border: 2px dashed #aaa; border-radius: 5px; background-color: #f9f9f9; min-height: 70px; text-align: center; color: #888; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        #selected-products-dropzone.dragover { background-color: #e9e9ff; border-color: #1a237e; }
+        #selected-products-dropzone h4 { margin: 0 0 10px 0; color: #555; font-size: 0.95em; font-weight: normal; }
+        #selected-products-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+        .product-item { background-color: #ffffff; padding: 6px 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ccc; font-size: 0.85em; }
+        .product-item span { flex-grow: 1; margin-right: 8px; }
+        .product-item button { background-color: #f44336; color: white; border: none; padding: 3px 8px; border-radius: 3px; cursor: pointer; font-size: 0.75em; line-height: 1; }
+        .product-item button:hover { background-color: #d32f2f; }
+
+        /* --- Footer Styles --- */
+        footer { background-color: #333; color: white; padding: 40px 0 20px; position: relative; z-index: 1; margin-top: 40px; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 30px; }
+        .footer-column { flex: 1; min-width: 220px; margin-bottom: 30px; padding: 0 10px; }
+        .footer-title { font-size: 17px; margin-bottom: 15px; color: #8491a3; }
+        .footer-links { list-style-type: none; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a { color: #aaa; text-decoration: none; transition: color 0.3s ease; font-size: 0.9em; }
+        .footer-links a:hover { color: #8491a3; }
+        .footer-social { display: flex; margin-top: 15px; }
+        .social-icon { width: 35px; height: 35px; background-color: #555; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 8px; color: white; text-decoration: none; transition: all 0.3s ease; }
+        .social-icon svg { width: 18px; height: 18px; }
+        .social-icon:hover { background-color: #003366; transform: translateY(-3px); }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #555; color: #aaa; font-size: 0.9em; }
+
+        /* --- Popup Styles --- */
+        .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; backdrop-filter: blur(5px); }
+        .popup-form { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto; z-index: 1001; }
+        .popup-close { position: absolute; top: 10px; right: 10px; font-size: 22px; cursor: pointer; color: #666; transition: color 0.3s ease; background: none; border: none; padding: 5px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .popup-close:hover { color: #1a237e; background-color: rgba(26, 35, 126, 0.1); }
+        .popup-title { color: #1a237e; font-size: 22px; margin-bottom: 15px; text-align: center; font-weight: 700; }
+        body.popup-open { overflow: hidden; }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 1024px) {
+             .contact-layout-wrapper {
+                 flex-direction: column; /* Stack columns */
+             }
+             #contact-product-list-sidebar {
+                 order: 1; /* Product list first */
+                 flex-basis: auto; /* Allow width to adjust */
+                 width: 100%; /* Full width */
+                 max-height: 400px; /* Adjust max height */
+             }
+             .contact-form-area {
+                 order: 2; /* Form second */
+                 width: 100%;
+                 max-width: none; /* Remove max width */
+             }
+             #drag-preview-sidebar {
+                 display: none !important; /* Ensure preview is hidden */
+             }
+        }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; align-items: flex-start; }
+            nav ul { justify-content: flex-start; padding-left: 0; }
+            nav ul li { margin-left: 10px; }
+            .logo-container { margin-bottom: 15px; }
+            nav { width: 100%; margin-left: 0; }
+            .hero h1 { font-size: 34px; }
+            .hero p { font-size: 16px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .steps { flex-direction: column; }
+            .step { margin-bottom: 25px; }
+            .contact-form { padding: 20px; }
+            .footer-column { min-width: 100%; padding: 0; }
+            #contact-product-list-sidebar {
+                max-height: 300px; /* Further reduce height */
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <!-- Elements from Animation Code -->
-    <div class="progress-bar" id="progress-bar"></div>
     <div id="canvas-container"></div>
 
-    <!-- Wrapper for all main content -->
-    <div class="main-content">
-        <!-- Navigation -->
-        <nav>
-            <div class="container">
-                <div class="nav-content">
-                    <div class="logo">Cut 2 Size</div>
-                    <ul class="nav-links">
+    <header>
+        <div class="header-background"></div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <img src="images/Logo.png" alt="Cut 2 Size Flatpack Cabinets - Circular Saw Blade Logo" style="max-width: 100%; display: block;" />
+                    </div>
+                </div>
+                <nav>
+                    <ul>
                         <li><a href="#home">Home</a></li>
-                        <li class="nav-dropdown">
-                            <a href="#services">Services</a>
-                            <div class="nav-dropdown-content services-dropdown">
-                                <div class="services-grid">
-                                    <div class="service-card">
-                                        <div class="service-icon">🏠</div>
-                                        <h3>Kitchen Cabinets</h3>
-                                        <p>Custom kitchen solutions with precision-cut components for easy assembly.</p>
-                                    </div>
-                                    <div class="service-card">
-                                        <div class="service-icon">🛁</div>
-                                        <h3>Bathroom & Laundry</h3>
-                                        <p>Vanities, overhead storage, and floating cupboards to fit your lifestyle.</p>
-                                    </div>
-                                    <div class="service-card">
-                                        <div class="service-icon">👔</div>
-                                        <h3>Wardrobes</h3>
-                                        <p>Maximize storage with custom solutions, sliding doors, and built-in organizers.</p>
-                                    </div>
-                                    <div class="service-card">
-                                        <div class="service-icon">📚</div>
-                                        <h3>Storage Solutions</h3>
-                                        <p>Bookcases, entertainment units, and office storage that blend with your home.</p>
-                                    </div>
-                                    <div class="service-card">
-                                        <div class="service-icon">🛠️</div>
-                                        <h3>Custom Cutting</h3>
-                                        <p>Precise cutting services for your specific measurements and premium materials.</p>
-                                    </div>
-                                    <div class="service-card">
-                                        <div class="service-icon">🎨</div>
-                                        <h3>Design Consultation</h3>
-                                        <p>Professional design services to help you visualize your project with 3D renderings.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-dropdown">
-                            <a href="#why-choose">Why Choose Us</a>
-                            <div class="nav-dropdown-content why-choose-dropdown">
-                                <div class="benefits-grid">
-                                    <div class="benefit-item">
-                                        <h4>Premium Materials</h4>
-                                        <p>We use high-quality MDF, plywood, and melamine boards for lasting durability.</p>
-                                    </div>
-                                    <div class="benefit-item">
-                                        <h4>Precision Engineering</h4>
-                                        <p>CNC cutting technology ensures perfect edges and accurate dimensions.</p>
-                                    </div>
-                                    <div class="benefit-item">
-                                        <h4>Custom Solutions</h4>
-                                        <p>Every project is tailored to your specific needs, measurements, and design.</p>
-                                    </div>
-                                    <div class="benefit-item">
-                                        <h4>Cost-Effective</h4>
-                                        <p>Flat pack design makes premium cabinetry accessible to every budget.</p>
-                                    </div>
-                                    <div class="benefit-item">
-                                        <h4>Quick Turnaround</h4>
-                                        <p>Efficient production processes mean faster delivery times without compromise.</p>
-                                    </div>
-                                    <div class="benefit-item">
-                                        <h4>Expert Support</h4>
-                                        <p>Our team provides guidance from initial design through to final installation.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="about.html">About Us</a></li>
                     </ul>
-                    <a href="#contact" class="cta-btn">GET A QUOTE</a>
-                </div>
+                </nav>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <div class="vertical-split-layout">
-            <!-- Hero Section -->
-            <section class="hero-section" id="home">
-                <div class="hero-content">
-                    <h1>Cut 2 Size</h1>
-                    <p>Providing Flat Pack Cabinetry to Central West NSW and Beyond!<br>
-                    From a Single Flatpack Cabinet to a Complete Installation of your entire Space.</p>
-                </div>
-            </section>
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Custom Flat Pack Cabinets Made Easy</h1>
+            <p>Cut2Size offers premium quality custom flat pack cabinets delivered directly to your door. Design your dream space with our easy-to-use online platform and enjoy hassle-free assembly.</p>
+            <button class="cta-button" onclick="openPopupForm()">Get Started Today</button>
+        </div>
+    </section>
 
-            <!-- Contact Callout Section (NEW) -->
-            <div class="contact-callout">
-                <div class="contact-header">
-                    <h3>Get in Touch</h3>
-                    <p>Request a quote or ask us anything</p>
+    <section id="how-it-works" class="how-it-works">
+         <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                 <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Review & Order</h3>
+                    <p class="step-description">Review our Product List, Order Online, Organise a Site Visit through our Contact Form Below for other Custom Requirements</p>
                 </div>
-                <div class="contact-form">
-                    <form id="contact-form" onsubmit="sendMail(event)">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="user_name">Full Name</label>
-                                <input type="text" id="user_name" name="user_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="user_email">Email</label>
-                                <input type="email" id="user_email" name="user_email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone</label>
-                                <input type="tel" id="phone" name="phone" pattern="[0-9\s\-\+]*" placeholder="e.g., 0400 123 456">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Project Details</label>
-                            <textarea id="message" name="message" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary">Send Request</button>
-                    </form>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Precision Manufacturing</h3>
+                    <p class="step-description">Our expert team precision-cuts your cabinets using state-of-the-art CNC technology.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Delivery & Assembly</h3>
+                    <p class="step-description">Receive your flat pack cabinets and easily assemble them with our instructions.</p>
                 </div>
             </div>
         </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Cut 2 Size?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Custom & Ready Made Sizing</h3>
+                    <p class="feature-description">Cabinets are precision-cut to your exact specifications or standard sizes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Premium Materials</h3>
+                    <p class="feature-description">High-quality, durable, moisture-resistant materials built to last.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Easy Assembly</h3>
+                    <p class="feature-description">Intuitive design, pre-drilled holes, and comprehensive instructions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-description">Quick turnaround times with delivery directly to your door.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Professional Finish</h3>
+                    <p class="feature-description">Achieve a professional look without the high cost of traditional cabinetry.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3 class="feature-title">Cost-Effective</h3>
+                    <p class="feature-description">Save significantly compared to fully assembled cabinets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us & Select Products</h2>
+            <p style="text-align: center; color: white; margin-top: -20px; margin-bottom: 30px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                Drag products from the list on the left into the drop zone within the form.
+            </p>
+
+            <div class="contact-layout-wrapper">
+
+                <div id="contact-product-list-sidebar">
+                    <h4>Floor Cabinets</h4>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FO/S" data-product-name="Open Shelves Floor Cabinet">
+                        <span class="product-name-condensed">Open Shelves</span>
+                        <span class="product-code-condensed">Code: FO/S</span>
+                        <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FD1" data-product-name="Single Door Floor Cabinet">
+                         <span class="product-name-condensed">Single Door</span>
+                         <span class="product-code-condensed">Code: FD1</span>
+                         <span class="product-sizes-condensed">Sizes: 0-600mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FD2" data-product-name="Double Door Floor Cabinet">
+                         <span class="product-name-condensed">Double Door</span>
+                         <span class="product-code-condensed">Code: FD2</span>
+                         <span class="product-sizes-condensed">Sizes: 601-1200mm</span>
+                    </div>
+                     <div class="product-card-condensed" draggable="true" data-product-code="DR1" data-product-name="1 Drawer Floor Unit">
+                         <span class="product-name-condensed">1 Drawer Unit</span>
+                         <span class="product-code-condensed">Code: DR1</span>
+                         <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+                     <div class="product-card-condensed" draggable="true" data-product-code="DR2" data-product-name="2 Drawer Floor Unit">
+                         <span class="product-name-condensed">2 Drawer Unit</span>
+                         <span class="product-code-condensed">Code: DR2</span>
+                         <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+                     <div class="product-card-condensed" draggable="true" data-product-code="DR3" data-product-name="3 Drawer Floor Unit">
+                         <span class="product-name-condensed">3 Drawer Unit</span>
+                         <span class="product-code-condensed">Code: DR3</span>
+                         <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+                     <div class="product-card-condensed" draggable="true" data-product-code="DR4" data-product-name="4 Drawer Floor Unit">
+                         <span class="product-name-condensed">4 Drawer Unit</span>
+                         <span class="product-code-condensed">Code: DR4</span>
+                         <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+                     <div class="product-card-condensed" draggable="true" data-product-code="FBIN" data-product-name="Bin Drawer Floor Unit">
+                         <span class="product-name-condensed">Bin Drawer Unit</span>
+                         <span class="product-code-condensed">Code: FBIN</span>
+                         <span class="product-sizes-condensed">Sizes: 450mm & 600mm</span>
+                    </div>
+
+                    <h4>Wall Units</h4>
+                     <div class="product-card-condensed" draggable="true" data-product-code="WD1" data-product-name="Single Door Wall Unit">
+                        <span class="product-name-condensed">Single Door</span>
+                        <span class="product-code-condensed">Code: WD1</span>
+                        <span class="product-sizes-condensed">Sizes: 0-600mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="WD2" data-product-name="Double Door Wall Unit">
+                        <span class="product-name-condensed">Double Door</span>
+                        <span class="product-code-condensed">Code: WD2</span>
+                        <span class="product-sizes-condensed">Sizes: 601-1200mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="O/S WALL" data-product-name="Open Shelf Wall Unit">
+                        <span class="product-name-condensed">Open Shelf</span>
+                        <span class="product-code-condensed">Code: O/S WALL</span>
+                        <span class="product-sizes-condensed">Sizes: 0-600mm & 601-1200mm</span>
+                    </div>
+
+                     <h4>Tall Cabinets</h4>
+                     <div class="product-card-condensed" draggable="true" data-product-code="TD1" data-product-name="Single Door Tall Cabinet">
+                        <span class="product-name-condensed">Single Door</span>
+                        <span class="product-code-condensed">Code: TD1</span>
+                        <span class="product-sizes-condensed">Sizes: 0-600mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="TD2" data-product-name="Double Door Tall Cabinet">
+                        <span class="product-name-condensed">Double Door</span>
+                        <span class="product-code-condensed">Code: TD2</span>
+                        <span class="product-sizes-condensed">Sizes: 601-1200mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="TMWS" data-product-name="Microwave Stack Tall Cabinet">
+                        <span class="product-name-condensed">Microwave Stack</span>
+                        <span class="product-code-condensed">Code: TMWS</span>
+                        <span class="product-sizes-condensed">Sizes: 600-900mm</span>
+                    </div>
+
+                    <h4>Vanity Units</h4>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FVD2" data-product-name="Floor Vanity Double Door">
+                        <span class="product-name-condensed">Floor Vanity Dbl Door</span>
+                        <span class="product-code-condensed">Code: FVD2</span>
+                        <span class="product-sizes-condensed">Sizes: 900mm-2400mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FVDR3" data-product-name="Floor Vanity Double Door w/ Drawers">
+                         <span class="product-name-condensed">Floor Vanity Dbl Door w/ Drawers</span>
+                         <span class="product-code-condensed">Code: FVDR3</span>
+                         <span class="product-sizes-condensed">Sizes: 900mm-2400mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="FVDR3F" data-product-name="Floor Vanity Double Door w/ Drawers & Fascia">
+                         <span class="product-name-condensed">Floor Vanity Dbl Door w/ Drawers & Fascia</span>
+                         <span class="product-code-condensed">Code: FVDR3F</span>
+                         <span class="product-sizes-condensed">Sizes: 900mm-2400mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="WVD2" data-product-name="Wall Vanity Double Door">
+                         <span class="product-name-condensed">Wall Vanity Dbl Door</span>
+                         <span class="product-code-condensed">Code: WVD2</span>
+                         <span class="product-sizes-condensed">Sizes: 900mm-2400mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="WVDR3" data-product-name="Wall Vanity Double Door w/ Drawers">
+                         <span class="product-name-condensed">Wall Vanity Dbl Door w/ Drawers</span>
+                         <span class="product-code-condensed">Code: WVDR3</span>
+                         <span class="product-sizes-condensed">Sizes: 900mm-2400mm</span>
+                    </div>
+                    <div class="product-card-condensed" draggable="true" data-product-code="WVDR3F" data-product-name="Wall Vanity Double Door w/ Drawers & Fascia">
+                         <span class="product-name-condensed">Wall Vanity Dbl Door w/ Drawers & Fascia</span>
+                         <span class="product-code-condensed">Code: WVDR3F</span>
+                         <span class="product-sizes-condensed">Sizes: 900mm-1200mm</span>
+                    </div>
+                </div>
+
+                <div class="contact-form-area">
+                    <div class="contact-form">
+                        <form id="contact-form" onsubmit="sendMail(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="contactName">Name</label>
+                                <input type="text" id="contactName" name="user_name" class="form-input" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactEmail">Email</label>
+                                <input type="email" id="contactEmail" name="user_email" class="form-input" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactPhone">Phone</label>
+                                <input type="tel" id="contactPhone" name="phone" class="form-input" placeholder="Your Phone Number">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="selected-products-dropzone">Selected Products (Drag from left)</label>
+                                <div id="selected-products-dropzone">
+                                    <h4>Drag Products Here</h4>
+                                    <div id="selected-products-list">
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="contactMessage">Message</label>
+                                <textarea id="contactMessage" name="message" class="form-textarea" placeholder="Tell us more about your project or ask any questions..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="helpMeasuring">Do you require help measuring?</label>
+                                <select id="helpMeasuring" class="form-input" onchange="toggleBookingWidget()">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
+                            <div id="bookingWidget" class="form-group" style="display: none;">
+                                <label class="form-label" for="bookingDate">Select Preferred Date and Time</label>
+                                <input type="date" id="bookingDate" class="form-input">
+                                <input type="time" id="bookingTime" class="form-input">
+                            </div>
+                            <button id="contactSubmitButton" class="form-button" type="submit">Send Enquiry</button>
+                            <div id="contactSuccessMessage">Your Enquiry has been sent</div>
+                        </form>
+                    </div>
+                 </div>
+
+
+                <div id="drag-preview-sidebar">
+                    <h4 id="preview-heading">Dragging:</h4>
+                    <p id="preview-name">Product Name</p>
+                    <p id="preview-code">Product Code</p>
+                </div>
+
+            </div> </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                 <div class="footer-column">
+                    <h3 class="footer-title">Cut 2 Size</h3>
+                    <p>Premium quality custom flat pack cabinets</p>
+                     <div class="footer-social">
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#contact">Products & Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                 <div class="footer-column">
+                    <h3 class="footer-title">Product Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#contact">Floor Cabinets</a></li>
+                        <li><a href="#contact">Wall Cabinets</a></li>
+                        <li><a href="#contact">Tall Cabinets</a></li>
+                        <li><a href="#contact">Vanity Cabinets</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact Info</h3>
+                    <ul class="footer-links">
+                        <li>Email: salescut2size@gmail.com</li>
+                        <li>Phone: 0423 892 792</li>
+                        <li>Address: 14/8 Edward Street, Orange NSW 2800</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cut2Size. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup-form">
+        <button class="popup-close" onclick="closePopupForm()">×</button>
+        <h3 class="popup-title">Get Started with Cut 2 Size</h3>
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="Your Email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" placeholder="Your Phone Number">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about your project..."></textarea>
+        </div>
+        <button class="form-button" onclick="submitPopupForm()">Send Message</button>
+      </div>
     </div>
 
     <script>
-        // --- SCRIPT FOR THREE.JS ANIMATION (WITH ADDITIONAL CABINETS) ---
-        let scene, camera, renderer, kitchenCabinet, bathroomVanity, storageCabinet, pantryCabinet, cornerCabinet, particles;
-        let mouseX = 0, mouseY = 0;
-        let scrollY = 0;
+        // --- Three.js Background Script ---
+        let scene, camera, renderer, kitchenFrame;
 
-        function initThreeJS() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 8;
+        function createKitchenFramework() {
+            // ... (background Three.js setup - unchanged) ...
+             kitchenFrame = new THREE.Group();
+            const material = new THREE.LineBasicMaterial({ color: 0x1a237e, transparent: true, opacity: 0.5, linewidth: 1.5 });
+            const baseWidth = 5, baseHeight = 2.5, baseDepth = 2.5;
+            const upperHeight = 2, upperDepth = 1.5;
+            const islandWidth = 3, islandDepth = 4;
+            const baseGeometry = new THREE.BoxGeometry(baseWidth, baseHeight, baseDepth);
+            const baseEdges = new THREE.EdgesGeometry(baseGeometry);
+            const baseLine = new THREE.LineSegments(baseEdges, material);
+            baseLine.position.y = baseHeight / 2;
+            const upperGeometry = new THREE.BoxGeometry(baseWidth, upperHeight, upperDepth);
+            const upperEdges = new THREE.EdgesGeometry(upperGeometry);
+            const upperLine = new THREE.LineSegments(upperEdges, material);
+            upperLine.position.y = baseHeight + 0.5 + upperHeight / 2;
+            upperLine.position.z = (baseDepth - upperDepth) / 2;
+            const islandGeometry = new THREE.BoxGeometry(islandWidth, baseHeight, islandDepth);
+            const islandEdges = new THREE.EdgesGeometry(islandGeometry);
+            const islandLine = new THREE.LineSegments(islandEdges, material);
+            islandLine.position.set(0, baseHeight / 2, baseDepth + 2);
+            kitchenFrame.add(baseLine);
+            kitchenFrame.add(upperLine);
+            kitchenFrame.add(islandLine);
+            const counterTopGeo = new THREE.PlaneGeometry(baseWidth, baseDepth);
+            const counterTopMat = new THREE.MeshBasicMaterial({ color: 0x9fa8da, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+            const counterTop = new THREE.Mesh(counterTopGeo, counterTopMat);
+            counterTop.rotation.x = -Math.PI / 2;
+            counterTop.position.y = baseHeight;
+            kitchenFrame.add(counterTop);
+            kitchenFrame.scale.set(1.2, 1.2, 1.2);
+            kitchenFrame.position.y = -1;
+            scene.add(kitchenFrame);
+        }
 
+        function initThreeJSBackground() {
+            // ... (background Three.js setup - unchanged) ...
+             scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(6, 4, 10);
+            camera.lookAt(0, 1, 0);
             renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(0x000000, 0);
-            renderer.shadowMap.enabled = true;
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            const ambientLight = new THREE.AmbientLight(0xcccccc, 0.8);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
-            directionalLight.position.set(10, 10, 5);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
-            createCabinets();
-            createParticles();
-
-            window.addEventListener('scroll', onScroll);
-            window.addEventListener('mousemove', onMouseMove);
-            window.addEventListener('resize', onWindowResize);
-
-            animate();
+            const container = document.getElementById('canvas-container');
+             if (container) {
+                 container.appendChild(renderer.domElement);
+                 createKitchenFramework();
+                 animateThreeJSBackground();
+                 window.addEventListener('resize', onWindowResizeThreeJS);
+             } else {
+                 console.error("Background canvas container not found.");
+             }
         }
 
-        function createCabinets() {
-            const whiteCabinetMaterial = new THREE.MeshPhongMaterial({ color: 0xf5f5f5, shininess: 90 });
-            const lightBrownTimberMaterial = new THREE.MeshPhongMaterial({ color: 0xDEB887, shininess: 60 });
-            const silverKickbaseMaterial = new THREE.MeshPhongMaterial({ color: 0xc0c0c0, shininess: 120 });
-            const titaniumHandleMaterial = new THREE.MeshPhongMaterial({ color: 0x878681, shininess: 150 });
-            const handleGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.3, 16);
-
-            // --- Kitchen Cabinet ---
-            kitchenCabinet = new THREE.Group();
-            const baseBody = new THREE.Mesh(new THREE.BoxGeometry(2, 1, 0.8), whiteCabinetMaterial);
-            baseBody.castShadow = true;
-            kitchenCabinet.add(baseBody);
-            const baseBenchtop = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.08, 0.85), lightBrownTimberMaterial);
-            baseBenchtop.position.y = 0.54;
-            baseBenchtop.castShadow = true;
-            kitchenCabinet.add(baseBenchtop);
-            const baseKickbase = new THREE.Mesh(new THREE.BoxGeometry(1.95, 0.1, 0.75), silverKickbaseMaterial);
-            baseKickbase.position.y = -0.55;
-            kitchenCabinet.add(baseKickbase);
-            const handle1 = new THREE.Mesh(handleGeometry, titaniumHandleMaterial);
-            handle1.position.set(0.7, 0, 0.41);
-            handle1.castShadow = true;
-            kitchenCabinet.add(handle1);
-            kitchenCabinet.position.set(-4, 0, 0);
-            scene.add(kitchenCabinet);
-
-            // --- Bathroom Vanity ---
-            bathroomVanity = new THREE.Group();
-            const vanityBody = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.8, 0.7), whiteCabinetMaterial);
-            vanityBody.position.y = -0.1;
-            vanityBody.castShadow = true;
-            bathroomVanity.add(vanityBody);
-            const vanityBenchtop = new THREE.Mesh(new THREE.BoxGeometry(2.55, 0.08, 0.75), lightBrownTimberMaterial);
-            vanityBenchtop.position.y = 0.34;
-            vanityBenchtop.castShadow = true;
-            bathroomVanity.add(vanityBenchtop);
-            const vanityKickbase = new THREE.Mesh(new THREE.BoxGeometry(2.45, 0.1, 0.65), silverKickbaseMaterial);
-            vanityKickbase.position.y = -0.55;
-            bathroomVanity.add(vanityKickbase);
-            const handle2 = new THREE.Mesh(handleGeometry, titaniumHandleMaterial);
-            handle2.position.set(-0.8, -0.1, 0.36);
-            handle2.castShadow = true;
-            bathroomVanity.add(handle2);
-            const handle3 = new THREE.Mesh(handleGeometry, titaniumHandleMaterial);
-            handle3.position.set(0.8, -0.1, 0.36);
-            handle3.castShadow = true;
-            bathroomVanity.add(handle3);
-            bathroomVanity.position.set(0, 0, -2);
-            scene.add(bathroomVanity);
-
-            // --- Storage Cabinet ---
-            storageCabinet = new THREE.Group();
-            const storageBody = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.3, 0.8), whiteCabinetMaterial);
-            storageBody.position.y = 0.05;
-            storageBody.castShadow = true;
-            storageCabinet.add(storageBody);
-            const storageTopPanel = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.08, 0.85), lightBrownTimberMaterial);
-            storageTopPanel.position.y = 1.24;
-            storageTopPanel.castShadow = true;
-            storageCabinet.add(storageTopPanel);
-            const storageKickbase = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.1, 0.75), silverKickbaseMaterial);
-            storageKickbase.position.y = -1.15;
-            storageCabinet.add(storageKickbase);
-            const handle4 = new THREE.Mesh(handleGeometry, titaniumHandleMaterial);
-            handle4.position.set(-0.3, 0.1, 0.41);
-            handle4.castShadow = true;
-            storageCabinet.add(handle4);
-            const handle5 = new THREE.Mesh(handleGeometry, titaniumHandleMaterial);
-            handle5.position.set(0.3, 0.1, 0.41);
-            handle5.castShadow = true;
-            storageCabinet.add(handle5);
-            storageCabinet.position.set(4, 0, 0);
-            scene.add(storageCabinet);
-
-            // --- Tall Pantry Cabinet (NEW) ---
-            pantryCabinet = new THREE.Group();
-            pantryCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(1, 3.5, 0.7), whiteCabinetMaterial));
-            pantryCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.08, 0.75), lightBrownTimberMaterial).translateY(1.8));
-            pantryCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.1, 0.65), silverKickbaseMaterial).translateY(-1.7));
-            pantryCabinet.add(new THREE.Mesh(handleGeometry, titaniumHandleMaterial).translateX(0.3).translateY(1.2).translateZ(0.36));
-            pantryCabinet.position.set(-7, 2, -6);
-            scene.add(pantryCabinet);
-
-            // --- Corner Cabinet (NEW) ---
-            cornerCabinet = new THREE.Group();
-            // L-shape using two boxes
-            cornerCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(1.2, 1, 0.7), whiteCabinetMaterial).translateX(-0.25));
-            cornerCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(1, 1.2, 0.7), whiteCabinetMaterial).translateY(0.1).translateX(0.1));
-            cornerCabinet.add(new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.08, 0.75), lightBrownTimberMaterial).translateY(0.6));
-            cornerCabinet.add(new THREE.Mesh(handleGeometry, titaniumHandleMaterial).translateX(0.5).translateY(-0.2).translateZ(0.36));
-            cornerCabinet.position.set(7, 5, -7);
-            scene.add(cornerCabinet);
-        }
-
-        function createParticles() {
-            const particleCount = 100;
-            const positions = new Float32Array(particleCount * 3);
-            for (let i = 0; i < particleCount * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 30;
+        function animateThreeJSBackground() {
+            requestAnimationFrame(animateThreeJSBackground);
+            if (kitchenFrame) {
+                kitchenFrame.rotation.y += 0.0015;
             }
-            const particleGeometry = new THREE.BufferGeometry();
-            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const particleMaterial = new THREE.PointsMaterial({ color: 0x3b82f6, size: 0.1, transparent: true, opacity: 0.5 });
-            particles = new THREE.Points(particleGeometry, particleMaterial);
-            scene.add(particles);
+             if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+             }
         }
 
-        function onScroll() {
-            scrollY = window.pageYOffset;
-            const scrollHeight = document.body.scrollHeight - window.innerHeight;
-            const scrollProgress = scrollY / scrollHeight;
-
-            document.getElementById('progress-bar').style.width = (scrollProgress * 100) + '%';
-
-            if (kitchenCabinet) {
-                kitchenCabinet.rotation.y = scrollY * 0.002;
-                kitchenCabinet.position.y = Math.sin(scrollY * 0.001) * 2;
+        function onWindowResizeThreeJS() {
+            if (camera && renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
             }
-            if (bathroomVanity) {
-                bathroomVanity.rotation.z = scrollY * 0.0015;
-                bathroomVanity.position.x = Math.cos(scrollY * 0.001) * 2.5;
-            }
-            if (storageCabinet) {
-                storageCabinet.rotation.x = scrollY * 0.0012;
-                storageCabinet.position.y = Math.cos(scrollY * 0.0008) * 2.2;
-            }
-            // Pantry Cabinet Animation
-            if (pantryCabinet) {
-                pantryCabinet.rotation.x = scrollY * 0.0012;
-                pantryCabinet.position.x = -7 + Math.sin(scrollY * 0.002) * 2;
-                pantryCabinet.position.y = 2 + Math.cos(scrollY * 0.002) * 1.5;
-            }
-            // Corner Cabinet Animation
-            if (cornerCabinet) {
-                cornerCabinet.rotation.z = scrollY * -0.001;
-                cornerCabinet.position.x = 7 - Math.cos(scrollY * 0.0015) * 2;
-                cornerCabinet.position.y = 5 + Math.sin(scrollY * 0.0015) * 2;
-            }
-
-            camera.position.z = 8 - (scrollProgress * 3);
-            camera.position.y = scrollY * -0.001;
         }
 
-        function onMouseMove(event) {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-        }
+        // --- Drag and Drop Logic ---
+        // Select the condensed product cards
+        const draggableProducts = document.querySelectorAll('.product-card-condensed');
+        const dropZone = document.getElementById('selected-products-dropzone');
+        const selectedProductsList = document.getElementById('selected-products-list');
+        const dragPreviewSidebar = document.getElementById('drag-preview-sidebar');
+        const previewNameEl = document.getElementById('preview-name');
+        const previewCodeEl = document.getElementById('preview-code');
+        let selectedProducts = []; // Stores { code, name }
 
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        draggableProducts.forEach(product => {
+            product.addEventListener('dragstart', (e) => {
+                product.classList.add('dragging');
+                const productData = {
+                    code: product.dataset.productCode,
+                    name: product.dataset.productName
+                };
+                // Use application/json for structured data transfer
+                e.dataTransfer.setData('application/json', JSON.stringify(productData));
+                e.dataTransfer.effectAllowed = 'copy';
 
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = Date.now() * 0.0005;
-
-            // Mouse follow
-            camera.position.x += (mouseX * 2 - camera.position.x) * 0.02;
-            camera.lookAt(scene.position);
-
-            // Continuous gentle rotations
-            if (kitchenCabinet) kitchenCabinet.rotation.x += 0.001;
-            if (bathroomVanity) bathroomVanity.rotation.y += 0.002;
-            if (storageCabinet) storageCabinet.rotation.z += 0.0015;
-            if (pantryCabinet) pantryCabinet.rotation.y += 0.001;
-            if (cornerCabinet) cornerCabinet.rotation.x += 0.0012;
-            if (particles) particles.rotation.y += 0.0005;
-
-            renderer.render(scene, camera);
-        }
-
-        // --- SCRIPT FOR PAGE BEHAVIOR (FROM FILE 2) ---
-        function initPageBehavior() {
-            // Hide scroll indicator after user scrolls
-            const indicator = document.querySelector('.scroll-indicator');
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 100) {
-                    indicator.style.opacity = '0';
-                } else {
-                    indicator.style.opacity = '1';
-                }
-            });
-
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Show and populate preview sidebar
+                if (dragPreviewSidebar && previewNameEl && previewCodeEl) {
+                    previewNameEl.textContent = productData.name || 'Unknown Product';
+                    previewCodeEl.textContent = `Code: ${productData.code || 'N/A'}`;
+                    // Check screen width before showing preview sidebar
+                    if (window.innerWidth > 1024) {
+                         dragPreviewSidebar.style.display = 'block';
                     }
-                });
-            });
-
-            // Add scroll effect to navigation
-            window.addEventListener('scroll', () => {
-                const nav = document.querySelector('nav');
-                if (window.scrollY > 50) {
-                    nav.style.background = 'rgba(15, 20, 25, 0.8)';
-                } else {
-                    nav.style.background = 'rgba(0, 0, 0, 0.95)';
                 }
             });
 
-            // Form submission handler
-            document.querySelector('form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                alert('Thank you for your inquiry! We\'ll get back to you shortly.');
-                this.reset();
+            product.addEventListener('dragend', () => {
+                product.classList.remove('dragging');
+                 // Hide preview sidebar
+                 if (dragPreviewSidebar) {
+                    dragPreviewSidebar.style.display = 'none';
+                 }
             });
-        }
-        
-        // --- INITIALIZE EVERYTHING ON PAGE LOAD ---
-        window.addEventListener('load', () => {
-            initThreeJS();
-            initPageBehavior();
         });
-    </script>
-    <script>
-        // Add this before your existing scripts
+
+        // Add event listeners to drop zone if it exists
+        if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault(); // Allow drop
+                dropZone.classList.add('dragover');
+                e.dataTransfer.dropEffect = 'copy';
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const dataString = e.dataTransfer.getData('application/json');
+
+                if (dataString) {
+                    try {
+                        const productData = JSON.parse(dataString);
+                        const alreadyAdded = selectedProducts.some(p => p.code === productData.code);
+
+                        if (!alreadyAdded) {
+                            selectedProducts.push(productData);
+                            renderSelectedProducts(); // Update the list display
+                        } else {
+                            alert(`${productData.name} (${productData.code}) is already in the list.`);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing dropped data:", error);
+                    }
+                }
+                 // Hide preview sidebar after drop
+                 if (dragPreviewSidebar) {
+                    dragPreviewSidebar.style.display = 'none';
+                 }
+            });
+        } else {
+            console.error("Drop zone element (#selected-products-dropzone) not found.");
+        }
+
+        // Function to display selected products in the drop zone
+        function renderSelectedProducts() {
+            if (!selectedProductsList || !dropZone) return;
+
+            selectedProductsList.innerHTML = ''; // Clear current list
+            const placeholderText = dropZone.querySelector('h4'); // Get the placeholder text
+
+            if (selectedProducts.length > 0) {
+                 if(placeholderText) placeholderText.style.display = 'none'; // Hide placeholder
+
+                selectedProducts.forEach((product, index) => {
+                    const item = document.createElement('div');
+                    item.classList.add('product-item');
+                    // Display product name and code
+                    item.innerHTML = `<span>${product.name} (${product.code})</span>`;
+
+                    // Add a remove button
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'Remove';
+                    removeBtn.type = 'button'; // Important to prevent form submission
+                    removeBtn.onclick = () => {
+                        selectedProducts.splice(index, 1); // Remove product from array
+                        renderSelectedProducts(); // Re-render the list
+                    };
+
+                    item.appendChild(removeBtn);
+                    selectedProductsList.appendChild(item);
+                });
+            } else {
+                 if(placeholderText) placeholderText.style.display = 'block'; // Show placeholder if list is empty
+            }
+        }
+
+
+        // --- Contact Form & Popup Logic ---
+        function openPopupForm() {
+             const overlay = document.getElementById('popupOverlay');
+             if (overlay) {
+                 overlay.style.display = 'block';
+                 document.body.classList.add('popup-open');
+             }
+        }
+
+        function closePopupForm() {
+             const overlay = document.getElementById('popupOverlay');
+             if (overlay) {
+                 overlay.style.display = 'none';
+                 document.body.classList.remove('popup-open');
+             }
+        }
+
+        function submitPopupForm() {
+            alert('Thank you for your message from the popup.');
+            closePopupForm();
+        }
+
+         const popupOverlay = document.getElementById('popupOverlay');
+         if (popupOverlay) {
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePopupForm();
+                }
+            });
+         }
+
+        function toggleBookingWidget() {
+             const select = document.getElementById('helpMeasuring');
+            const widget = document.getElementById('bookingWidget');
+            if (select && widget) {
+                 widget.style.display = select.value === 'yes' ? 'block' : 'none';
+            }
+        }
+
+        // Function to handle sending the email via mailto:
+        function sendContactEmail() {
+            // Get form values safely using optional chaining
+            const name = document.getElementById('contactName')?.value || 'N/A';
+            const email = document.getElementById('contactEmail')?.value || 'N/A';
+            const phone = document.getElementById('contactPhone')?.value || 'N/A';
+            const message = document.getElementById('contactMessage')?.value || 'No message provided.';
+            const helpSelect = document.getElementById('helpMeasuring');
+            const helpNeeded = helpSelect ? helpSelect.value === 'yes' : false;
+            const bookingDate = document.getElementById('bookingDate')?.value;
+            const bookingTime = document.getElementById('bookingTime')?.value;
+
+            const recipient = 'salescut2size@gmail.com';
+            const subject = `Website Enquiry from ${name}`;
+
+            // Build email body
+            let body = `You have received a new enquiry:\n\n`;
+            body += `Name: ${name}\n`;
+            body += `Email: ${email}\n`;
+            body += `Phone: ${phone}\n\n`;
+
+            // Add selected products to body
+            if (selectedProducts.length > 0) {
+                body += `Interested Products:\n`;
+                selectedProducts.forEach(product => {
+                    body += `- ${product.name} (Code: ${product.code})\n`;
+                });
+                body += `\n`;
+            } else {
+                 body += `Interested Products: None selected\n\n`;
+            }
+
+            body += `Message: \n${message}\n\n`;
+            body += `Requires help measuring: ${helpNeeded ? 'Yes' : 'No'}\n`;
+
+            if (helpNeeded && bookingDate && bookingTime) {
+                body += `Requested Booking Date: ${bookingDate}\n`;
+                body += `Requested Booking Time: ${bookingTime}\n`;
+            }
+
+            // Encode subject and body for mailto link
+            const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            // Check mailto link length (approximate limit)
+            if (mailtoLink.length > 2000) {
+                 alert("Your enquiry is very long (likely due to many selected products or a long message), which might cause issues with some email clients. Please consider reducing the number of selected products or shortening your message, or contact us directly via email.");
+                 return; // Stop before attempting to open link
+            }
+
+            // Open email client
+            window.location.href = mailtoLink;
+
+            // Show success message
+            const successMsg = document.getElementById('contactSuccessMessage');
+             if(successMsg) successMsg.style.display = 'block';
+
+            // Clear form and selected products after a delay
+             setTimeout(() => {
+                 // Safely get and clear form elements
+                 const contactNameInput = document.getElementById('contactName');
+                 const contactEmailInput = document.getElementById('contactEmail');
+                 const contactPhoneInput = document.getElementById('contactPhone');
+                 const contactMessageInput = document.getElementById('contactMessage');
+                 const bookingDateInput = document.getElementById('bookingDate');
+                 const bookingTimeInput = document.getElementById('bookingTime');
+
+                 if(contactNameInput) contactNameInput.value = '';
+                 if(contactEmailInput) contactEmailInput.value = '';
+                 if(contactPhoneInput) contactPhoneInput.value = '';
+                 if(contactMessageInput) contactMessageInput.value = '';
+                 if (helpSelect) helpSelect.value = 'no';
+                 if (bookingDateInput) bookingDateInput.value = '';
+                 if (bookingTimeInput) bookingTimeInput.value = '';
+                 toggleBookingWidget(); // Reset booking widget visibility
+
+                selectedProducts = []; // Clear selected products array
+                renderSelectedProducts(); // Update display
+
+                if(successMsg) successMsg.style.display = 'none'; // Hide success message
+             }, 3000); // 3-second delay
+        }
+
+        // --- EmailJS Form Submission Function ---
         function sendMail(event) {
             event.preventDefault();
             
@@ -1483,7 +1029,23 @@
                 });
         }
 
-        // ...your existing scripts...
+        // --- Initialization on Load ---
+        window.addEventListener('load', () => {
+            // Initialize background animation if container exists
+            if (document.getElementById('canvas-container')) {
+                 initThreeJSBackground();
+            } else {
+                 console.warn("Background canvas container not found. Skipping background init.");
+            }
+
+            // Initialize booking widget visibility if element exists
+            if (document.getElementById('helpMeasuring')) {
+                 toggleBookingWidget();
+            }
+             // Initial render of selected products list (usually empty)
+             renderSelectedProducts();
+        });
+
     </script>
 </body>
 </html>
